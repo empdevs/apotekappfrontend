@@ -1,0 +1,52 @@
+.Dashboard {
+
+  height: 100%;
+
+}
+.Dashboard .ant-layout.ant-layout-has-sider {
+
+  height: 100%;
+
+}
+
+.Dashboard .trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.Dashboard .logo {
+  height: 32px !important;
+  margin: 16px !important;
+  background: #fff;
+}
+
+.Dashboard .site-layout .site-layout-background {
+  background: #fff;
+}
+
+.Dashboard .site-layout .ant-layout-header{
+
+  background: #3d91ff;
+
+}
+
+.Dashboard .ant-layout-sider{
+
+  background: #fff;
+  
+}
+.Dashboard .icon-module{
+
+  transform: rotate(-30deg);
+
+}
+.footer {
+  height: 64px;
+  width: 100%;
+  background-color:#3d91ff;
+  color: white;
+  text-align: center;
+}
