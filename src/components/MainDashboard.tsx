@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, MinusCircleOutlined , AreaChartOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, MinusCircleOutlined , AreaChartOutlined , AppstoreOutlined} from '@ant-design/icons';
 import { BrowserRouter, Route, Link, Switch, useRouteMatch } from 'react-router-dom';
-import Drugs from './module/Drugs';
+import Drugs from './module/drug/Drugs';
+import Category from './module/category/Category';
+import CreateCategory from './module/category/CreateCategory';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap-icons/font/bootstrap-icons.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -13,9 +15,31 @@ export default function MainDashboard() {
 
     const { Header, Sider, Content } = Layout;
     const {url, path} = useRouteMatch();
+    let routerKey : any ; 
 
+    //state
     let [collapsed, setCollapsed] = useState<boolean>();
+
+    //route
+    const routerDashboard = `${window.location.protocol}//${window.location.host}${url}/Dashboard`;
+    const routerDrugs = `${window.location.protocol}//${window.location.host}${url}/Drugs`;
+    const routerCategory = `${window.location.protocol}//${window.location.host}${url}/Category`;
     
+    switch (window.location.href) {
+        case routerDashboard:
+            routerKey = ['1'];
+        break;
+        case routerCategory:
+            routerKey = ['2'];
+        break;
+        case routerDrugs:
+            routerKey = ['3'];
+        break;
+        
+        default:
+        break;
+    }
+
     function _toggle(){
 
         if(!collapsed){
@@ -31,7 +55,7 @@ export default function MainDashboard() {
     };
 
     useEffect(()=>{
-
+        
         setCollapsed(false);
 
     },[]);
@@ -53,13 +77,19 @@ export default function MainDashboard() {
 
                         }
                     </div>
-                <Menu mode="inline" defaultSelectedKeys={['1']}>
+                  
+                <Menu mode="inline" defaultSelectedKeys={routerKey}>
                     <Menu.Item key="1" icon={<AreaChartOutlined />}>
                         <Link to={`${url}/Dashboard`}>
                             Dashboard
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<MinusCircleOutlined className='icon-module'/>}>
+                    <Menu.Item key="2" icon={<AppstoreOutlined />}>
+                        <Link to={`${url}/Category`}>
+                            Category
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="3" icon={<MinusCircleOutlined className='icon-module'/>}>
                         <Link to={`${url}/Drugs`}>
                             Drugs
                         </Link>
@@ -95,6 +125,9 @@ export default function MainDashboard() {
                         {/* url = Index */}
                         <Switch>
                             <Route path={`${url}/Drugs`} component={Drugs}/>
+
+                            <Route path={`${url}/Category`} component={Category}/>
+                            <Route path={`${url}/CreateCategory`} component={CreateCategory}/>
                         </Switch>
 
                     </Content>

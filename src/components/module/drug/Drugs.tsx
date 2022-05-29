@@ -4,7 +4,7 @@ import { Space, Table, Tag } from 'antd'
 function Drugs() {
 
     
-const columns = [
+const columns : any = [
     {
       title: 'Name',
       dataIndex: 'name',
@@ -15,6 +15,7 @@ const columns = [
       title: 'Age',
       dataIndex: 'age',
       key: 'age',
+      responsive : ['lg','sm','md']
     },
     {
       title: 'Address',
@@ -90,7 +91,13 @@ const data = [
         <div className="main">
             <div className="row">
                 <div className="col-lg-12">
-                    <Table columns={columns} dataSource={data} pagination={false}/>
+                    <Table
+                     columns={columns} 
+                     dataSource={data} 
+                     pagination={false} 
+                     size={"small"}
+                     scroll={{ x: 'max-content',  y : 330}}
+                    />
                 </div>
             </div>
         </div>
