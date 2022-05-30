@@ -133,7 +133,7 @@ export default function CreateCategory() {
                 }
                 { successNotification &&
 
-                    <Alert message="Success create" type="success" showIcon closable/>
+                    <Alert message={messageSuccessNotification} type="success" showIcon closable/>
 
                 }
             </div>

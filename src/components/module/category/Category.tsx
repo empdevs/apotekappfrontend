@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button} from 'antd'
+import { Table, Button, Alert} from 'antd'
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Uri from '../../../Uri';
+import CategoryType from '../../../utility/TypesInterfaces';
+import { Modal } from 'react-bootstrap';
+export default function Category(props:any) {
 
-export default function Category() {
-
-    let [ dataSource, setDataSource] = useState<any>([]);
-
+    let [ dataSource, setDataSource] = useState<CategoryType[]>([]);
+    let [ show, setShow] = useState<any>(false);
+    let [ idCategory, setIdCategory] = useState<String>("");
+    let [ deleteNotification, setDeleteNotifiaction] = useState<Boolean>();
+    let [ messageDeleteNotification, setMessageDeleteNotification] = useState<String>();
     const columns : any = [
+        {
+          title: 'Id',
+          dataIndex: 'number',
+          key: 'number',
+          // width : '80%'
+        },
         {
           title: 'Category',
           dataIndex: 'name',
           key: 'name',
-          width : '80%'
+          width : '60%'
         },
         {
           title: 'Action',
@@ -25,7 +35,12 @@ export default function Category() {
                 <button className='btn btn-success d-flex align-items-center mx-1'>
                   <EditOutlined />
                 </button>
-                <button className='btn btn-danger d-flex align-items-center mx-1'>
+                <button className='btn btn-danger d-flex align-items-center mx-1' onClick={(e:any)=>{
+
+                  setIdCategory(record.id);
+                  setShow(true);
+
+                }}>
                   <DeleteOutlined />
                 </button>
               </div>
@@ -51,6 +66,54 @@ export default function Category() {
       console.log(error);
 
     });
+
+  }
+
+  async function _deleteData(e:any){
+
+    e.preventDefault();
+
+    let data = {
+
+      "deleted_by" : "system"
+
+    }
+
+    await axios.put(Uri.rootUri + `/category/${idCategory}/delete/`, data)
+    .then(function(response:any){
+
+      console.log(response);
+
+      setIdCategory("");
+
+      setMessageDeleteNotification("Success delete");
+
+      setDeleteNotifiaction(true);
+
+      setShow(false);
+
+      _loadData();
+
+      setTimeout(()=>{
+
+        setDeleteNotifiaction(false);
+
+      },3000);
+
+    })
+    .catch(function(error:any){
+
+      console.log(error);
+
+    });
+
+  }
+
+  function _handleCloseDelete(){
+
+    setIdCategory("");
+
+    setShow(false);
 
   }
 
@@ -80,6 +143,15 @@ export default function Category() {
                     </Link>
                 </div>
             </div>
+            <div className="row mb-3">
+              <div className="col-lg-12">
+              { deleteNotification &&
+
+                <Alert message={messageDeleteNotification} type="success" showIcon closable/>
+
+              }
+              </div>
+            </div>
             <div className="row">
                 <div className="col-lg-12">
                     <Table
@@ -92,6 +164,24 @@ export default function Category() {
                 </div>
             </div>
         </div>
+
+        {/* Modal for confirm */}
+        {/* <> */}
+            <Modal show={show} onHide={_handleCloseDelete}>
+              <Modal.Header closeButton>
+                <Modal.Title>Confirmation</Modal.Title>
+              </Modal.Header>
+            <Modal.Body>Are you delete this ?</Modal.Body>
+              <Modal.Footer>
+                  <button className='btn btn-success' onClick={_handleCloseDelete}>
+                  Cancel
+                </button>
+                <button className='btn btn-danger' onClick={_deleteData}>
+                  Ok
+                </button>
+              </Modal.Footer>
+            </Modal>
+        {/* </> */}
     </div>
   )
 }
