@@ -10,9 +10,9 @@ export default function Category(props:any) {
 
     let [ dataSource, setDataSource] = useState<CategoryType[]>([]);
     let [ show, setShow] = useState<any>(false);
-    let [ idCategory, setIdCategory] = useState<String>("");
-    let [ deleteNotification, setDeleteNotifiaction] = useState<Boolean>();
-    let [ messageDeleteNotification, setMessageDeleteNotification] = useState<String>();
+    let [ idCategory, setIdCategory] = useState<string>("");
+    let [ deleteNotification, setDeleteNotifiaction] = useState<boolean>();
+    let [ messageDeleteNotification, setMessageDeleteNotification] = useState<string>();
     const columns : any = [
         {
           title: 'Id',
