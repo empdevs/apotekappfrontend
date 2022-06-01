@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button, Alert} from 'antd'
+import { Table, Button, Alert, Input} from 'antd'
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -9,10 +9,17 @@ import { Modal } from 'react-bootstrap';
 export default function Category(props:any) {
 
     let [ dataSource, setDataSource] = useState<CategoryType[]>([]);
-    let [ show, setShow] = useState<any>(false);
+    let [ showDelete, setShowDelete] = useState<boolean>(false);
+    let [ showUpdate, setShowUpdate] = useState<boolean>(false);
     let [ idCategory, setIdCategory] = useState<string>("");
+    let [ category, setCategory] = useState<string>("");
     let [ deleteNotification, setDeleteNotifiaction] = useState<boolean>();
     let [ messageDeleteNotification, setMessageDeleteNotification] = useState<string>();
+    let [ updateNotification, setUpdateNotification] = useState<boolean>();
+    let [ updateErrorNotification, setUpdateErrorNotification] = useState<boolean>();
+    let [ messageUpdateNotification, setMessageUpdateNotification] = useState<string>("");
+    let [ messageErrorNotification, setMessageErrorNotification] = useState<string>("");
+
     const columns : any = [
         {
           title: 'Id',
@@ -32,13 +39,19 @@ export default function Category(props:any) {
             return(
               <>
               <div className="d-flex">
-                <button className='btn btn-success d-flex align-items-center mx-1'>
+                <button className='btn btn-success d-flex align-items-center mx-1' onClick={(e:any)=>{
+
+                  setIdCategory(record.id);
+                  setCategory(record.name);
+                  setShowUpdate(true);
+
+                }}>
                   <EditOutlined />
                 </button>
                 <button className='btn btn-danger d-flex align-items-center mx-1' onClick={(e:any)=>{
 
                   setIdCategory(record.id);
-                  setShow(true);
+                  setShowDelete(true);
 
                 }}>
                   <DeleteOutlined />
@@ -69,6 +82,66 @@ export default function Category(props:any) {
 
   }
 
+  async function _updateData(e:any){
+
+    e.preventDefault();
+
+    if(!category || category === "" || category.match(/^ *$/) !== null){
+
+      setMessageErrorNotification("Please insert category name");
+
+      setUpdateErrorNotification(true);
+
+      setTimeout(()=>{
+
+        setUpdateErrorNotification(false);
+
+      }, 3000);
+
+    }else{
+
+      let data = {
+
+        "id" : idCategory,
+        "name" : category,
+        "updated_by" : "system"
+
+      }
+
+      await axios.put(Uri.rootUri + `/category/${idCategory}/update/`, data)
+      .then(function(response:any){
+
+        // console.log(response);
+
+        setIdCategory("");
+
+        setCategory("");
+
+        setMessageUpdateNotification("Success update");
+
+        setUpdateNotification(true);
+
+        setShowUpdate(false);
+
+        _loadData();
+
+        setTimeout(()=>{
+
+          setUpdateNotification(false);
+
+        }, 3000);
+
+      })
+      .catch(function(error:any){
+
+        console.log(error);
+
+      });
+
+    }
+
+  }
+
   async function _deleteData(e:any){
 
     e.preventDefault();
@@ -82,7 +155,7 @@ export default function Category(props:any) {
     await axios.put(Uri.rootUri + `/category/${idCategory}/delete/`, data)
     .then(function(response:any){
 
-      console.log(response);
+      // console.log(response);
 
       setIdCategory("");
 
@@ -90,7 +163,7 @@ export default function Category(props:any) {
 
       setDeleteNotifiaction(true);
 
-      setShow(false);
+      setShowDelete(false);
 
       _loadData();
 
@@ -108,12 +181,35 @@ export default function Category(props:any) {
     });
 
   }
+  function _category(e:any){
 
+    if(e.target.value){
+
+        setCategory(e.target.value);
+
+    }else{
+
+        setCategory("");
+
+    }
+
+}
   function _handleCloseDelete(){
 
     setIdCategory("");
 
-    setShow(false);
+    setShowDelete(false);
+
+  }
+  function _handleCloseUpdate(){
+
+    setIdCategory("");
+
+    setCategory("");
+
+    setShowUpdate(false);
+
+    setUpdateErrorNotification(false);
 
   }
 
@@ -128,7 +224,7 @@ export default function Category(props:any) {
         <div className="header mb-3">
             <div className="row">
                 <div className="col-lg-12">
-                    <h3 className='text-secondary'>Category</h3>
+                    <h3>Category</h3>
                     {/* <hr /> */}
                 </div>
             </div>
@@ -150,6 +246,11 @@ export default function Category(props:any) {
                 <Alert message={messageDeleteNotification} type="success" showIcon closable/>
 
               }
+              { updateNotification &&
+
+                <Alert message={messageUpdateNotification} type="success" showIcon closable/>
+
+              }
               </div>
             </div>
             <div className="row">
@@ -167,17 +268,47 @@ export default function Category(props:any) {
 
         {/* Modal for confirm */}
         {/* <> */}
-            <Modal show={show} onHide={_handleCloseDelete}>
+            <Modal show={showDelete} onHide={_handleCloseDelete}>
               <Modal.Header closeButton>
                 <Modal.Title>Confirmation</Modal.Title>
               </Modal.Header>
-            <Modal.Body>Are you delete this ?</Modal.Body>
+            <Modal.Body>Do you want to delete this ?</Modal.Body>
               <Modal.Footer>
                   <button className='btn btn-success' onClick={_handleCloseDelete}>
                   Cancel
                 </button>
                 <button className='btn btn-danger' onClick={_deleteData}>
                   Ok
+                </button>
+              </Modal.Footer>
+            </Modal>
+            <Modal show={showUpdate} onHide={_handleCloseUpdate}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Category</Modal.Title>
+              </Modal.Header>
+            <Modal.Body>
+            <div className="row mb-2">
+              <div className="col-lg-12">
+                { updateErrorNotification &&
+                  <Alert message={messageErrorNotification} type="error" showIcon closable/>
+                }
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-lg-12">
+                  <div className='form-input mb-3'>
+                      <label htmlFor="category" className='mb-2 text-secondary'>Name Category</label>
+                      <Input id='category' name='category' onChange={_category} value={category ? category : ""}/>
+                  </div>
+              </div>
+            </div>
+            </Modal.Body>
+              <Modal.Footer>
+                <button className='btn btn-secondary' onClick={_handleCloseUpdate}>
+                  Cancel
+                </button>
+                <button className='btn btn-primary' onClick={_updateData}>
+                  Update
                 </button>
               </Modal.Footer>
             </Modal>

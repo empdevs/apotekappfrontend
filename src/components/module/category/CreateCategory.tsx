@@ -57,7 +57,7 @@ export default function CreateCategory() {
             }
 
             await axios.post(Uri.rootUri + `/category/`, data)
-            .then(function(response){
+            .then(function(response:any){
 
                 console.log(response);
                 
@@ -75,7 +75,7 @@ export default function CreateCategory() {
 
 
             })
-            .catch(function(error){
+            .catch(function(error:any){
 
                 console.log(error);
 
