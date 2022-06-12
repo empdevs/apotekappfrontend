@@ -50,7 +50,7 @@ export default function CreateCategory() {
         
             let data = {
 
-                "category" :  category,
+                "name" :  category,
                 "created_by" : "system",
                 "updated_by" : "system"
     
