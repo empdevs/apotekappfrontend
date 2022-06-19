@@ -6,7 +6,14 @@ import axios from 'axios';
 import Uri from '../../../Uri';
 import CategoryType from '../../../utility/TypesInterfaces';
 import { Modal } from 'react-bootstrap';
+import { getListCategory } from '../../../actions/CategoryAction';
+import { useDispatch, useSelector } from 'react-redux';
+
 export default function Category(props:any) {
+
+    const dispatch : any = useDispatch();
+
+    const { getListCategoryData } : any = useSelector((state:any)=> state.CategoryReducer);
 
     let [ dataSource, setDataSource] = useState<CategoryType[]>([]);
     let [ showDelete, setShowDelete] = useState<boolean>(false);
@@ -81,6 +88,11 @@ export default function Category(props:any) {
     });
 
   }
+  // async function _loadData(){
+
+  //  await dispatch(getListCategory());
+
+  // }
 
   async function _updateData(e:any){
 
@@ -215,12 +227,15 @@ export default function Category(props:any) {
 
   useEffect(()=>{
 
+    console.log("Use effect running");
+
     _loadData();
 
   },[]);
 
   return (
     <div className='Category'>
+      {/* {console.log(getListCategoryData)} */}
         <div className="header mb-3">
             <div className="row">
                 <div className="col-lg-12">
@@ -258,6 +273,7 @@ export default function Category(props:any) {
                     <Table
                      columns={columns} 
                      dataSource={dataSource} 
+                    //  dataSource={getListCategoryData.data} 
                      pagination={false} 
                      size={"small"}
                      scroll={{ x: 'max-content',  y : 'max-content'}}

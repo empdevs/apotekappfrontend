@@ -1,4 +1,4 @@
-import { GET_LIST_CATEGORY } from "../../actions/CategoryAction"
+import { GET_LIST_CATEGORY } from "../../types";
 
 const initialState = {
 
@@ -8,19 +8,21 @@ const initialState = {
  
 }
 
-const category = (state= initialState, action: any ) => {
-
-    switch (action) {
+const category = (state = initialState , action: any ) => {
+    // console.log(action.type);
+    switch (action.type) {
         case GET_LIST_CATEGORY:
+            // console.log("3. Sign reducers");
             return {...state,
                 getListCategoryLoading : action.payload.loading,
                 getListCategoryData : action.payload.data,
-                getListCategoryError : action.payload.errorMessage
+                getListCategoryError : action.payload.error
             }    
         break;
     
         default:
-            break;
+            return state
+        break;
     }
 
 }
