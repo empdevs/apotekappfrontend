@@ -50,9 +50,9 @@ export default function CreateCategory() {
         
             let data = {
 
-                "name" :  category,
-                "created_by" : "system",
-                "updated_by" : "system"
+                "category_name" :  category,
+                "category_created_by" : "system",
+                "category_updated_by" : "system"
     
             }
 
@@ -141,7 +141,7 @@ export default function CreateCategory() {
         <div className="row">
             <div className="col-lg-12">
                 <div className='form-input mb-3'>
-                    <label htmlFor="category" className='mb-2 text-secondary'>Name Category</label>
+                    <label htmlFor="category" className='mb-2 text-secondary'>Category Name</label>
                     <Input id='category' name='category' onChange={_category} value={category ? category : ""}/>
                 </div>
             </div>

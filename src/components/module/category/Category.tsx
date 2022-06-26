@@ -19,18 +19,19 @@ export default function Category(props:any) {
     let [ updateErrorNotification, setUpdateErrorNotification] = useState<boolean>();
     let [ messageUpdateNotification, setMessageUpdateNotification] = useState<string>("");
     let [ messageErrorNotification, setMessageErrorNotification] = useState<string>("");
+    let [ loading, setLoading] = useState<boolean>();
 
     const columns : any = [
         {
           title: 'Id',
-          dataIndex: 'number',
-          key: 'number',
+          dataIndex: 'category_number',
+          key: 'category_number'
           // width : '80%'
         },
         {
           title: 'Category',
-          dataIndex: 'name',
-          key: 'name',
+          dataIndex: 'category_name',
+          key: 'category_name',
           width : '60%'
         },
         {
@@ -42,7 +43,7 @@ export default function Category(props:any) {
                 <button className='btn btn-success d-flex align-items-center mx-1' onClick={(e:any)=>{
 
                   setIdCategory(record.id);
-                  setCategory(record.name);
+                  setCategory(record.category_name);
                   setShowUpdate(true);
 
                 }}>
@@ -66,6 +67,8 @@ export default function Category(props:any) {
    
   async function _loadData(){
 
+    setLoading(true);
+
     await axios.get(Uri.rootUri + '/category')
     .then(function(response:any){
 
@@ -73,9 +76,13 @@ export default function Category(props:any) {
 
       setDataSource(dataResponse);
 
+      setLoading(false);
+
     })
     .catch(function(error:any){
 
+      setLoading(false);
+      
       console.log(error);
 
     });
@@ -103,8 +110,8 @@ export default function Category(props:any) {
       let data = {
 
         "id" : idCategory,
-        "name" : category,
-        "updated_by" : "system"
+        "category_name" : category,
+        "category_updated_by" : "system"
 
       }
 
@@ -148,7 +155,7 @@ export default function Category(props:any) {
 
     let data = {
 
-      "deleted_by" : "system"
+      "category_deleted_by" : "system"
 
     }
 
@@ -258,6 +265,7 @@ export default function Category(props:any) {
                     <Table
                      columns={columns} 
                      dataSource={dataSource} 
+                     loading={loading}
                      pagination={false} 
                      size={"small"}
                      scroll={{ x: 'max-content',  y : 'max-content'}}

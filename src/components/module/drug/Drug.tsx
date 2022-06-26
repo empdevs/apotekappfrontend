@@ -1,5 +1,7 @@
 import React from 'react'
-import { Space, Table, Tag } from 'antd'
+import { Button, Space, Table, Tag } from 'antd'
+import { Link } from 'react-router-dom';
+import { PlusOutlined } from '@ant-design/icons';
 
 function Drugs() {
 
@@ -79,16 +81,24 @@ const data = [
   ];
 
   return (
-    <div className='Drugs'>
+    <div className='Drug'>
         <div className="header mb-3">
             <div className="row">
                 <div className="col-lg-12">
-                    <h3 className='text-secondary'>Drugs</h3>
-                    <hr />
+                    <h3>Drugs</h3>
                 </div>
             </div>
         </div>
         <div className="main">
+            <div className="row mb-3">
+                <div className="col-lg-12">
+                    <Link to={'/Index/CreateDrug'}>
+                        <Button type="primary" className=' d-flex align-items-center'>
+                            <PlusOutlined /> Add New Drug
+                        </Button>
+                    </Link>
+                </div>
+            </div>
             <div className="row">
                 <div className="col-lg-12">
                     <Table

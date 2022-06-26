@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, MinusCircleOutlined , AreaChartOutlined , AppstoreOutlined} from '@ant-design/icons';
 import { BrowserRouter, Route, Link, Switch, useRouteMatch } from 'react-router-dom';
-import Drugs from './module/drug/Drugs';
+import Drug from './module/drug/Drug';
+import CreateDrug from './module/drug/CreateDrug';
 import Category from './module/category/Category';
 import CreateCategory from './module/category/CreateCategory';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -90,7 +91,7 @@ export default function MainDashboard() {
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="3" icon={<MinusCircleOutlined className='icon-module'/>}>
-                        <Link to={`${url}/Drugs`}>
+                        <Link to={`${url}/Drug`}>
                             Drugs
                         </Link>
                     </Menu.Item>
@@ -113,18 +114,12 @@ export default function MainDashboard() {
                         //   onClick: _toggle,
                         // })} */}
                     </Header>
-                    <Content
-                        className="site-layout-background"
-                        style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        minHeight: 280,
-                        }}
-                    >   
+                    <Content className="site-layout-background">   
                         {/* this in main router */}
                         {/* url = Index */}
                         <Switch>
-                            <Route path={`${url}/Drugs`} component={Drugs}/>
+                            <Route path={`${url}/Drug`} component={Drug}/>
+                            <Route path={`${url}/CreateDrug`} component={CreateDrug}/>
 
                             <Route path={`${url}/Category`} component={Category}/>
                             <Route path={`${url}/CreateCategory`} component={CreateCategory}/>
