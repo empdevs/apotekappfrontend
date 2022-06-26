@@ -30,14 +30,14 @@ export default function Category(props:any) {
     const columns : any = [
         {
           title: 'Id',
-          dataIndex: 'number',
-          key: 'number',
+          dataIndex: 'category_number',
+          key: 'category_number',
           // width : '80%'
         },
         {
           title: 'Category',
-          dataIndex: 'name',
-          key: 'name',
+          dataIndex: 'category_name',
+          key: 'category_name',
           width : '60%'
         },
         {
@@ -49,7 +49,7 @@ export default function Category(props:any) {
                 <button className='btn btn-success d-flex align-items-center mx-1' onClick={(e:any)=>{
 
                   setIdCategory(record.id);
-                  setCategory(record.name);
+                  setCategory(record.category_name);
                   setShowUpdate(true);
 
                 }}>
@@ -115,8 +115,8 @@ export default function Category(props:any) {
       let data = {
 
         "id" : idCategory,
-        "name" : category,
-        "updated_by" : "system"
+        "category_name" : category,
+        "category_updated_by" : "system"
 
       }
 
@@ -160,7 +160,7 @@ export default function Category(props:any) {
 
     let data = {
 
-      "deleted_by" : "system"
+      "category_deleted_by" : "system"
 
     }
 
