@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, MinusCircleOutlined , AreaChartOutlined , AppstoreOutlined} from '@ant-design/icons';
-import { BrowserRouter, Route, Link, Switch, useRouteMatch } from 'react-router-dom';
-import Drugs from './module/drug/Drugs';
+import { BrowserRouter, Route, Link, Switch, useRouteMatch,  useLocation } from 'react-router-dom';
+import Drug from './module/drug/Drug';
 import Category from './module/category/Category';
 import CreateCategory from './module/category/CreateCategory';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -10,12 +10,13 @@ import '../../node_modules/bootstrap-icons/font/bootstrap-icons.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../node_modules/antd/dist/antd.css';
 import './style/App.css';
+import CreateDrug from './module/drug/CreateDrug';
 
 export default function MainDashboard() {
 
     const { Header, Sider, Content } = Layout;
     const {url, path} = useRouteMatch();
-    let routerKey : any ; 
+    let [routerKey, setRouterKey] = useState<any[]>([]); 
 
     //state
     let [collapsed, setCollapsed] = useState<boolean>();
@@ -25,19 +26,23 @@ export default function MainDashboard() {
     const routerDrugs = `${window.location.protocol}//${window.location.host}${url}/Drugs`;
     const routerCategory = `${window.location.protocol}//${window.location.host}${url}/Category`;
     
-    switch (window.location.href) {
-        case routerDashboard:
-            routerKey = ['1'];
-        break;
-        case routerCategory:
-            routerKey = ['2'];
-        break;
-        case routerDrugs:
-            routerKey = ['3'];
-        break;
-        
-        default:
-        break;
+    function _routeActive(){
+       
+        switch (window.location.href) {
+            case routerDashboard:
+                setRouterKey(['1']);
+            break;
+            case routerCategory:
+                setRouterKey(['2']);
+            break;
+            case routerDrugs:
+                setRouterKey(['3']);
+            break;
+            
+            default:
+            break;
+        }
+
     }
 
     function _toggle(){
@@ -55,7 +60,8 @@ export default function MainDashboard() {
     };
 
     useEffect(()=>{
-        
+
+        _routeActive();
         setCollapsed(false);
 
     },[]);
@@ -77,20 +83,20 @@ export default function MainDashboard() {
 
                         }
                     </div>
-                  
-                <Menu mode="inline" defaultSelectedKeys={routerKey}>
-                    <Menu.Item key="1" icon={<AreaChartOutlined />}>
+                    {console.log(routerKey)}
+                <Menu mode="inline" defaultSelectedKeys={routerKey.length > 0 ? routerKey : ['1']}>
+                    <Menu.Item key="1" icon={<AreaChartOutlined />} onClick={_routeActive}>
                         <Link to={`${url}/Dashboard`}>
                             Dashboard
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<AppstoreOutlined />}>
+                    <Menu.Item key="2" icon={<AppstoreOutlined />} onClick={_routeActive}>
                         <Link to={`${url}/Category`}>
                             Category
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="3" icon={<MinusCircleOutlined className='icon-module'/>}>
-                        <Link to={`${url}/Drugs`}>
+                    <Menu.Item key="3" icon={<MinusCircleOutlined className='icon-module'/>} onClick={_routeActive}>
+                        <Link to={`${url}/Drug`}>
                             Drugs
                         </Link>
                     </Menu.Item>
@@ -118,13 +124,14 @@ export default function MainDashboard() {
                         style={{
                         margin: '24px 16px',
                         padding: 24,
-                        minHeight: 280,
+                        height: "auto",
                         }}
                     >   
                         {/* this in main router */}
                         {/* url = Index */}
                         <Switch>
-                            <Route path={`${url}/Drugs`} component={Drugs}/>
+                            <Route path={`${url}/Drug`} component={Drug}/>
+                            <Route path={`${url}/CreateDrug`} component={CreateDrug}/>
 
                             <Route path={`${url}/Category`} component={Category}/>
                             <Route path={`${url}/CreateCategory`} component={CreateCategory}/>

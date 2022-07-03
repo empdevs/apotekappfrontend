@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button, Alert, Input} from 'antd'
+import { Table, Button, Alert, Input, Tag} from 'antd'
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Uri from '../../../Uri';
 import CategoryType from '../../../utility/TypesInterfaces';
 import { Modal } from 'react-bootstrap';
-import { getListCategory } from '../../../actions/CategoryAction';
+// import { getListCategory } from '../../../actions/CategoryAction';
 import { useDispatch, useSelector } from 'react-redux';
+import { SliderPicker } from 'react-color';
 
 export default function Category(props:any) {
 
-    const dispatch : any = useDispatch();
+    // const dispatch : any = useDispatch();
 
-    const { getListCategoryData } : any = useSelector((state:any)=> state.CategoryReducer);
+    // const { getListCategoryData } : any = useSelector((state:any)=> state.CategoryReducer);
 
     let [ dataSource, setDataSource] = useState<CategoryType[]>([]);
     let [ showDelete, setShowDelete] = useState<boolean>(false);
     let [ showUpdate, setShowUpdate] = useState<boolean>(false);
     let [ idCategory, setIdCategory] = useState<string>("");
     let [ category, setCategory] = useState<string>("");
+    let [ color, setColor] = useState<string>("");
     let [ deleteNotification, setDeleteNotifiaction] = useState<boolean>();
     let [ messageDeleteNotification, setMessageDeleteNotification] = useState<string>();
     let [ updateNotification, setUpdateNotification] = useState<boolean>();
@@ -32,13 +34,21 @@ export default function Category(props:any) {
           title: 'Id',
           dataIndex: 'category_number',
           key: 'category_number',
-          // width : '80%'
         },
         {
           title: 'Category',
           dataIndex: 'category_name',
           key: 'category_name',
-          width : '60%'
+          width : '60%',
+          render : (text:any, record:any, index:any) => {
+
+            return(
+              <>
+                <Tag color={record.category_color}>{text}</Tag>
+              </>
+            )
+
+          }
         },
         {
           title: 'Action',
@@ -50,6 +60,7 @@ export default function Category(props:any) {
 
                   setIdCategory(record.id);
                   setCategory(record.category_name);
+                  setColor(record.category_color);
                   setShowUpdate(true);
 
                 }}>
@@ -98,9 +109,9 @@ export default function Category(props:any) {
 
     e.preventDefault();
 
-    if(!category || category === "" || category.match(/^ *$/) !== null){
+    if(!category || category === "" || category.match(/^ *$/) !== null || !color || color.match(/^ *$/) !== null){
 
-      setMessageErrorNotification("Please insert category name");
+      setMessageErrorNotification("Please insert category name and select color !");
 
       setUpdateErrorNotification(true);
 
@@ -116,6 +127,7 @@ export default function Category(props:any) {
 
         "id" : idCategory,
         "category_name" : category,
+        "category_color" : color,
         "category_updated_by" : "system"
 
       }
@@ -128,6 +140,8 @@ export default function Category(props:any) {
         setIdCategory("");
 
         setCategory("");
+
+        setColor("");
 
         setMessageUpdateNotification("Success update");
 
@@ -205,7 +219,13 @@ export default function Category(props:any) {
 
     }
 
-}
+  }
+
+  function _color(e:any){
+
+    setColor(e.hex);
+
+  }
   function _handleCloseDelete(){
 
     setIdCategory("");
@@ -218,6 +238,8 @@ export default function Category(props:any) {
     setIdCategory("");
 
     setCategory("");
+
+    setColor("");
 
     setShowUpdate(false);
 
@@ -298,6 +320,8 @@ export default function Category(props:any) {
                 </button>
               </Modal.Footer>
             </Modal>
+
+            
             <Modal show={showUpdate} onHide={_handleCloseUpdate}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit Category</Modal.Title>
@@ -316,6 +340,15 @@ export default function Category(props:any) {
                       <label htmlFor="category" className='mb-2 text-secondary'>Name Category</label>
                       <Input id='category' name='category' onChange={_category} value={category ? category : ""}/>
                   </div>
+                  <div className="col-lg-12">
+                  <div className="form-input mb-3">
+                      <label htmlFor="color" className='mb-2 text-secondary'>Color</label>
+                      <SliderPicker
+                          onChangeComplete={_color}
+                          color={color ? color : ""}
+                      />
+                  </div>
+            </div>
               </div>
             </div>
             </Modal.Body>

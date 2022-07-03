@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import MainDashboard from './components/MainDashboard';
 import { Provider } from 'react-redux';
 import store from './store/index';
@@ -10,6 +10,9 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
+          <Route exact path={`/`}>
+            <Redirect to={`/Index`}/>
+          </Route>
           <Route path={`/Index`} component={MainDashboard}/>
         </Switch>
       </BrowserRouter>

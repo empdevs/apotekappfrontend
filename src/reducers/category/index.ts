@@ -1,10 +1,14 @@
-import { GET_LIST_CATEGORY } from "../../types";
+import { GET_LIST_CATEGORY, CREATE_CATEGORY } from "../../types";
 
 const initialState = {
 
     getListCategoryData : false,
     getListCategoryLoading : false,
     getListCategoryError : false,
+
+    createCategorySuccess : false,
+    createCategoryLoading : false,
+    createCategoryError: false,
  
 }
 
@@ -19,7 +23,12 @@ const category = (state = initialState , action: any ) => {
                 getListCategoryError : action.payload.error
             }    
         break;
-    
+        case CREATE_CATEGORY:
+            return { ...state,
+                createCategorySuccess : action.payload.success,
+                createCategoryLoading : action.payload.loading,
+                createCategoryError : action.payload.error
+            }
         default:
             return state
         break;
