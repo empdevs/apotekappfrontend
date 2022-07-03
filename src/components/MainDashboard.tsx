@@ -119,14 +119,7 @@ export default function MainDashboard() {
                         //   onClick: _toggle,
                         // })} */}
                     </Header>
-                    <Content
-                        className="site-layout-background"
-                        style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        height: "auto",
-                        }}
-                    >   
+                    <Content className="site-layout-background">   
                         {/* this in main router */}
                         {/* url = Index */}
                         <Switch>
