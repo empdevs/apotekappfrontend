@@ -34,6 +34,7 @@ export default function Category(props:any) {
           title: 'Id',
           dataIndex: 'category_number',
           key: 'category_number',
+          width: '10%'
         },
         {
           title: 'Category',

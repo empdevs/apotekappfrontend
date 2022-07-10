@@ -55,8 +55,10 @@ export default function CreateCategory() {
             setMessageErrorNotification("Please insert category name and select color !");
 
             setTimeout(()=>{
-
+                
                 setErrorNotification(false);
+                
+                setMessageErrorNotification("");
 
             }, 3000);
 
@@ -88,8 +90,10 @@ export default function CreateCategory() {
                 setSuccessNotification(true);
 
                 setTimeout(()=>{
-
+                    
                     setSuccessNotification(false);
+                    
+                    setMessageSuccessNotification("");
 
                 },3000);
 
@@ -106,6 +110,8 @@ export default function CreateCategory() {
                 setTimeout(()=>{
 
                     setErrorNotification(false);
+
+                    setMessageErrorNotification("");
 
                 }, 3000);
 

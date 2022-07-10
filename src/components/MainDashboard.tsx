@@ -131,9 +131,6 @@ export default function MainDashboard() {
                         </Switch>
 
                     </Content>
-                    <div className="footer">
-                        {/* <p>this is footer</p> */}
-                    </div>
                 </Layout>
             </Layout>
         </div>

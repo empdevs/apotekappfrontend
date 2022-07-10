@@ -36,6 +36,7 @@
 .Dashboard .ant-layout-sider{
 
   background: #fff;
+  border-right: 2px solid #ededed;
   
 }
 .Dashboard .icon-module{
@@ -53,5 +54,17 @@
 main.ant-layout-content.site-layout-background{
   margin: 24px 16px;
   padding: 24px ;
-  min-height: auto;
+  height: 100%;
+}
+.ant-layout{
+  height: 100%;
+  background: #fff;
+}
+.styleDropzone{
+
+  background: #ededed;
+  width: 180px;
+  height: 80px;
+  border: 2px dashed #898989;
+
 }
