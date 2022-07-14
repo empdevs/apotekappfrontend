@@ -7,11 +7,59 @@ import Uri from '../../../Uri';
 import DrugType from '../../../utility/TypesInterfaces';
 import Helper from '../../../utility/Helper';
 import Dropzone from 'react-dropzone';
-import { UploadOutlined } from '@ant-design/icons';
+import Notification from '../../../utility/Notification';
 
 export default function Drug() {
 
   let [ dataSource, setDataSource] = useState<DrugType[]>([]);
+  let [ messageErrorNotification, setMessageErrorNotification] = useState<string>("");
+  let [ messageSuccessNotification, setMessageSuccessNotification] = useState<string>("");
+  let [ successNotification, setSuccessNotification] = useState<boolean>();
+  let [ errorNotification, setErrorNotification] = useState<boolean>();
+
+  async function _uploadImage(file:any, record:any){
+
+    let validExt : any[] = ["jpg", "jpeg", "png"];
+    let fileInput = file[0];
+    let fileInputExt = fileInput.name.split('.').pop();
+
+    if(!validExt.includes(fileInputExt)){
+
+      // console.log("Error");
+
+      setMessageErrorNotification("Please input with extension format ( jpg, jpeg, png )");
+
+      setErrorNotification(true);
+
+      setTimeout(()=>{
+
+        setErrorNotification(false);
+
+        setMessageErrorNotification("");
+
+      }, 3000);
+      
+
+    }else{
+      console.log(fileInput);
+      const formData = new FormData();
+
+      formData.append("file",fileInput);
+
+      await axios.post(Uri.rootUri + `/drug/upload/`, formData)
+      .then(function(response:any){
+
+        console.log(response);
+
+      })      
+      .catch(function(error:any){
+
+      });
+     
+
+    }
+    
+  }
     
 const columns : any = [
     {
@@ -81,15 +129,14 @@ const columns : any = [
 
             return(
 
-              <Dropzone>
+              <Dropzone
+                onDrop={(file:any)=>_uploadImage(file, record)}
+              >
                 {({getRootProps, getInputProps}) => (
                   <div className='styleDropzone'>
                     <div {...getRootProps()}>
                       <input {...getInputProps()} />
-                      <div className='text-center'>
-                        <div>
-                          <UploadOutlined style={{fontSize:'20px'}}/>
-                        </div>
+                      <div className='text-center my-1'>
                         <p className='m-0' style={{fontSize:"8px"}}>
                           <strong>Drag and drop</strong> your file(s) in the area OR
                         </p>
@@ -209,6 +256,20 @@ const columns : any = [
                         </Button>
                     </Link>
                 </div>
+            </div>
+            <div className="row mb-1">
+              <div className="col-lg-12">
+              { errorNotification &&
+
+                  <Notification
+                      message={messageErrorNotification}
+                      type="error"
+                      showIcon={true}
+                      closable={true}
+                  />
+
+                }
+              </div>
             </div>
             <div className="row">
                 <div className="col-lg-12">
