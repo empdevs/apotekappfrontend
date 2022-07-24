@@ -6,4 +6,10 @@ export default class Uri {
 
     }
 
+    public static get hostUri(){
+
+        return process.env.REACT_APP_HOST_URI;
+
+    }
+
 }

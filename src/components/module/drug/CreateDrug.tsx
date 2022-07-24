@@ -68,7 +68,7 @@ export default function CreateDrug() {
 
         }else{
 
-            setStock(0);
+            setStock(undefined);
         }
 
     }
@@ -80,7 +80,7 @@ export default function CreateDrug() {
 
         }else{
 
-            setPrice(0);
+            setPrice(undefined);
         }
 
     }

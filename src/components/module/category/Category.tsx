@@ -311,7 +311,7 @@ export default function Category(props:any) {
               <Modal.Header closeButton>
                 <Modal.Title>Confirmation</Modal.Title>
               </Modal.Header>
-            <Modal.Body>Do you want to delete this ?</Modal.Body>
+            <Modal.Body>Do you want to delete this data ?</Modal.Body>
               <Modal.Footer>
                   <button className='btn btn-success' onClick={_handleCloseDelete}>
                   Cancel
