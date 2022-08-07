@@ -142,15 +142,11 @@ export default function CreateDrug() {
         ){
 
             setMessageErrorNotification("Please fill in the fields correctly and stock at least one !");
-
             setErrorNotification(true);
 
             setTimeout(()=>{
-
                 setErrorNotification(false);
-
                 setMessageErrorNotification("");
-
             }, 3000);
 
         }else{
@@ -171,45 +167,23 @@ export default function CreateDrug() {
             .then(function(response:any){
 
                 let dataResponse : any = response.data.data;
-
                 setCategoryId("");
-
                 setDrug("");
-
                 setStock(undefined);
-
                 setPrice(undefined);
-
                 setBenefit("");
-                
                 setMessageSuccessNotification("Success create");
-
                 setSuccessNotification(true);
 
                 setTimeout(()=>{
-
                     setSuccessNotification(false);
-
                     setMessageSuccessNotification("");
-
                 },3000);
 
             })
             .catch(function(error:any){
 
                 console.log(error);
-
-                setMessageErrorNotification(error.response.data.message);
-
-                setErrorNotification(true);
-
-                setTimeout(()=>{
-
-                    setErrorNotification(false);
-
-                    setMessageErrorNotification("");
-
-                }, 3000);
 
             });
 
@@ -245,7 +219,7 @@ export default function CreateDrug() {
 
                     <Notification
                         message={messageErrorNotification}
-                        type="error"
+                        type={"error"}
                         showIcon={true}
                         closable={true}
                     />
@@ -256,7 +230,7 @@ export default function CreateDrug() {
 
                     <Notification
                         message={messageSuccessNotification}
-                        type="success"
+                        type={"success"}
                         showIcon={true}
                         closable={true}
                     />

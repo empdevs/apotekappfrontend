@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path={`/`}>
-            <Redirect to={`/Index`}/>
+            <Redirect to={`/Index/Dashboard`}/>
           </Route>
           <Route path={`/Index`} component={MainDashboard}/>
         </Switch>

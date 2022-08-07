@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button, Alert, Input, Tag} from 'antd'
+import { Table, Alert, Input, Tag, Button} from 'antd'
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -7,8 +7,10 @@ import Uri from '../../../Uri';
 import CategoryType from '../../../utility/TypesInterfaces';
 import { Modal } from 'react-bootstrap';
 // import { getListCategory } from '../../../actions/CategoryAction';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { SliderPicker } from 'react-color';
+import ModalPopupConfirmation from '../../../utility/ModalPopup';
+import Notification from '../../../utility/Notification';
 
 export default function Category(props:any) {
 
@@ -88,7 +90,7 @@ export default function Category(props:any) {
     await axios.get(Uri.rootUri + '/category')
     .then(function(response:any){
 
-      let dataResponse = response.data.data;
+      let dataResponse : CategoryType[] = response.data.data;
 
       setDataSource(dataResponse);
 
@@ -113,11 +115,11 @@ export default function Category(props:any) {
     if(!category || category === "" || category.match(/^ *$/) !== null || !color || color.match(/^ *$/) !== null){
 
       setMessageErrorNotification("Please insert category name and select color !");
-
       setUpdateErrorNotification(true);
 
       setTimeout(()=>{
 
+        setMessageErrorNotification("");
         setUpdateErrorNotification(false);
 
       }, 3000);
@@ -139,23 +141,16 @@ export default function Category(props:any) {
         // console.log(response);
 
         setIdCategory("");
-
         setCategory("");
-
         setColor("");
-
         setMessageUpdateNotification("Success update");
-
         setUpdateNotification(true);
-
         setShowUpdate(false);
-
         _loadData();
 
         setTimeout(()=>{
-
+          setMessageUpdateNotification("");
           setUpdateNotification(false);
-
         }, 3000);
 
       })
@@ -185,17 +180,14 @@ export default function Category(props:any) {
       // console.log(response);
 
       setIdCategory("");
-
       setMessageDeleteNotification("Success delete");
-
       setDeleteNotifiaction(true);
-
       setShowDelete(false);
-
       _loadData();
 
       setTimeout(()=>{
 
+        setMessageDeleteNotification("");
         setDeleteNotifiaction(false);
 
       },3000);
@@ -208,6 +200,7 @@ export default function Category(props:any) {
     });
 
   }
+
   function _category(e:any){
 
     if(e.target.value){
@@ -227,24 +220,24 @@ export default function Category(props:any) {
     setColor(e.hex);
 
   }
-  function _handleCloseDelete(){
+  
+  function _handleCloseModal(action: string){
 
     setIdCategory("");
-
-    setShowDelete(false);
-
-  }
-  function _handleCloseUpdate(){
-
-    setIdCategory("");
-
     setCategory("");
-
     setColor("");
 
-    setShowUpdate(false);
+    switch (action) {
+      case "update":
+        setShowUpdate(false);
+      break;
+      case "delete":
+        setShowDelete(false);
+      break;
+      default:
+      break;
+    }
 
-    setUpdateErrorNotification(false);
 
   }
 
@@ -281,12 +274,22 @@ export default function Category(props:any) {
               <div className="col-lg-12">
               { deleteNotification &&
 
-                <Alert message={messageDeleteNotification} type="success" showIcon closable/>
+                <Notification
+                  message={messageDeleteNotification}
+                  type={"success"}
+                  showIcon={true}
+                  closable={true}
+                />
 
               }
               { updateNotification &&
 
-                <Alert message={messageUpdateNotification} type="success" showIcon closable/>
+                <Notification
+                  message={messageUpdateNotification}
+                  type={"success"}
+                  showIcon={true}
+                  closable={true}
+                />
 
               }
               </div>
@@ -304,26 +307,9 @@ export default function Category(props:any) {
                 </div>
             </div>
         </div>
-
-        {/* Modal for confirm */}
-        {/* <> */}
-            <Modal show={showDelete} onHide={_handleCloseDelete}>
-              <Modal.Header closeButton>
-                <Modal.Title>Confirmation</Modal.Title>
-              </Modal.Header>
-            <Modal.Body>Do you want to delete this data ?</Modal.Body>
-              <Modal.Footer>
-                  <button className='btn btn-success' onClick={_handleCloseDelete}>
-                  Cancel
-                </button>
-                <button className='btn btn-danger' onClick={_deleteData}>
-                  Ok
-                </button>
-              </Modal.Footer>
-            </Modal>
-
-            
-            <Modal show={showUpdate} onHide={_handleCloseUpdate}>
+             
+          {/* delete category */} 
+            <Modal show={showUpdate} onHide={()=>_handleCloseModal("update")}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit Category</Modal.Title>
               </Modal.Header>
@@ -349,20 +335,28 @@ export default function Category(props:any) {
                           color={color ? color : ""}
                       />
                   </div>
-            </div>
+                </div>
               </div>
             </div>
             </Modal.Body>
               <Modal.Footer>
-                <button className='btn btn-secondary' onClick={_handleCloseUpdate}>
-                  Cancel
-                </button>
-                <button className='btn btn-primary' onClick={_updateData}>
+                <Button type="default" onClick={()=>_handleCloseModal("update")}>
+                <i className="bi bi-1-circle-fill"></i> Cancel
+                </Button>
+                <Button type="primary" onClick={_updateData}>
                   Update
-                </button>
+                </Button>
               </Modal.Footer>
             </Modal>
-        {/* </> */}
+
+            <ModalPopupConfirmation
+              action={"delete"}
+              showPopup={showDelete}
+              hidePopup={_handleCloseModal}
+              titlePopup={"Confirmation"}
+              textPopup={"Do you want to delete this data ?"}
+              actionButton={_deleteData}
+            />
     </div>
   )
 }

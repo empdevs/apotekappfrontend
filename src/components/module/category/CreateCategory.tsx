@@ -6,6 +6,7 @@ import Uri from '../../../Uri';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { SliderPicker } from 'react-color';
+import Notification from '../../../utility/Notification';
 // import { createCategory } from '../../../actions/CategoryAction';
 // import { useDispatch, useSelector } from 'react-redux';
 
@@ -51,15 +52,11 @@ export default function CreateCategory() {
         if(!category || category === "" || category.match(/^ *$/) !== null || !color || color.match(/^ *$/) !== null){
 
             setErrorNotification(true);
-
             setMessageErrorNotification("Please insert category name and select color !");
 
             setTimeout(()=>{
-                
                 setErrorNotification(false);
-                
                 setMessageErrorNotification("");
-
             }, 3000);
 
         }else{
@@ -82,19 +79,13 @@ export default function CreateCategory() {
                 console.log(response);
                 
                 setCategory("");
-
                 setColor("");
-
                 setMessageSuccessNotification("Success create");
-                
                 setSuccessNotification(true);
 
                 setTimeout(()=>{
-                    
-                    setSuccessNotification(false);
-                    
+                    setSuccessNotification(false); 
                     setMessageSuccessNotification("");
-
                 },3000);
 
 
@@ -102,18 +93,6 @@ export default function CreateCategory() {
             .catch(function(error:any){
 
                 console.log(error);
-
-                setMessageErrorNotification(error.response.data.message);
-
-                setErrorNotification(true);
-
-                setTimeout(()=>{
-
-                    setErrorNotification(false);
-
-                    setMessageErrorNotification("");
-
-                }, 3000);
 
             });
 
@@ -156,12 +135,22 @@ export default function CreateCategory() {
             <div className="col-lg-12">
                 { errorNotification &&
 
-                    <Alert message={messageErrorNotification} type="error" showIcon closable/>
+                    <Notification
+                        message={messageErrorNotification}
+                        type={"error"}
+                        showIcon={true}
+                        closable={true}
+                    />
 
                 }
                 { successNotification &&
 
-                    <Alert message={messageSuccessNotification} type="success" showIcon closable/>
+                    <Notification
+                        message={messageSuccessNotification}
+                        type={"success"}
+                        showIcon={true}
+                        closable={true}
+                    />
 
                 }
             </div>

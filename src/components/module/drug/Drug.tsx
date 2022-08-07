@@ -9,6 +9,8 @@ import Helper from '../../../utility/Helper';
 import Dropzone from 'react-dropzone';
 import Notification from '../../../utility/Notification';
 import { Modal } from 'react-bootstrap';
+import ModalPopupConfirmation from '../../../utility/ModalPopup';
+import CategoryType from '../../../utility/TypesInterfaces';
 
 export default function Drug() {
 
@@ -26,7 +28,7 @@ export default function Drug() {
   let [ picture, setPicture] = useState<string>("");
   let [ benefit, setBenefit] = useState<string>("");
   let [ showUpdate, setShowUpdate] = useState<boolean>();
-  let [ categoryData, setCategoryData] = useState<any[]>([]);
+  let [ categoryData, setCategoryData] = useState<CategoryType[]>([]);
   let [ childCategoryElement, setChildCategoryElement] = useState<any[]>([]);
   let [ showDialogDelete, setShowDialogDelete] = useState<boolean>();
   let [ showDelete, setShowDelete] = useState<boolean>();
@@ -108,18 +110,12 @@ export default function Drug() {
 
     if(!validExt.includes(fileInputExt)){
 
-      // console.log("Error");
-
       setMessageErrorNotification("Please input with extension format ( jpg, jpeg, png )");
-
       setErrorNotification(true);
 
       setTimeout(()=>{
-
         setErrorNotification(false);
-
         setMessageErrorNotification("");
-
       }, 3000);
       
 
@@ -135,17 +131,12 @@ export default function Drug() {
         console.log(response);
 
         setMessageSuccessNotification("Success upload image");
-
         setSuccessNotification(true);
-
         _loadData();
 
         setTimeout(()=>{
-
           setSuccessNotification(false);
-
           setMessageSuccessNotification("");
-
         }, 3000);
 
 
@@ -153,18 +144,6 @@ export default function Drug() {
       .catch(function(error:any){
 
         console.log(error);
-
-        setMessageErrorNotification(error.response.data.message);
-
-        setErrorNotification(true);
-
-        setTimeout(()=>{
-
-          setErrorNotification(false);
-
-          setMessageErrorNotification("");
-
-        }, 3000);
 
       });
      
@@ -343,7 +322,7 @@ const columns : any = [
     await axios.get(Uri.rootUri + `/drug/`)
     .then(function(response:any){
 
-      let dataResponse : any = response.data.data;
+      let dataResponse : DrugType[] = response.data.data;
 
       setDataSource(dataResponse);
 
@@ -356,16 +335,17 @@ const columns : any = [
 
 
   }
+
   async function _loadCategory(){
 
-    let arrElement : any [] = [];
+    let arrElement : any[] = [];
 
     await axios.get(Uri.rootUri + '/category')
     .then(function(response:any){
 
-        let dataResponse = response.data.data;
+        let dataResponse : CategoryType[] = response.data.data;
         
-        dataResponse.forEach((item:any)=>{
+        dataResponse.forEach((item:CategoryType)=>{
 
             arrElement.push(
             <Option key={item.id}>
@@ -378,7 +358,6 @@ const columns : any = [
         });
 
         setChildCategoryElement(arrElement);
-
         setCategoryData(dataResponse);
 
     })
@@ -401,13 +380,11 @@ const columns : any = [
     ){
 
      setMessageErrorNotification("Please fill in the fields correctly and stock at least one !");
-
-     setErrorNotification(true);
+     setUpdateErrorNotification(true);
 
      setTimeout(()=>{
 
-         setErrorNotification(false);
-
+         setUpdateErrorNotification(false);
          setMessageErrorNotification("");
 
      }, 3000);
@@ -431,33 +408,20 @@ const columns : any = [
     .then(function(response:any){
 
       setShowUpdate(false);
-
       setDrugId("");
-
       setDrug("");
-
       setCategoryId("");
-
       setStock(undefined);
-
       setPrice(undefined);
-
       setPicture("");
-
       setBenefit("");
-
       setMessageSuccessNotification("Success update data");
-
       setSuccessNotification(true);
-
       _loadData();
 
       setTimeout(()=>{
-
         setSuccessNotification(false);
-
         setMessageSuccessNotification("");
-
       },3000);
       
 
@@ -490,23 +454,15 @@ async function _deleteImage(e:any){
     console.log(response);
 
     setShowDialogDelete(false);
-
     setDrugId("");
-
     setPicture("");
-
     setMessageSuccessNotification("Success delete image");
-
     setSuccessNotification(true);
-
     _loadData();
 
     setTimeout(()=>{
-
       setSuccessNotification(false);
-
       setMessageSuccessNotification("");
-
     },3000);
 
 
@@ -538,23 +494,15 @@ async function _deleteData(e:any){
     console.log(response);
     
     setShowDelete(false);
-
     setDrugId("");
-
     setPicture("");
-
     setMessageSuccessNotification("Success delete data");
-
     setSuccessNotification(true);
-
     _loadData();
 
     setTimeout(()=>{
-
       setSuccessNotification(false);
-
       setMessageSuccessNotification("");
-
     }, 3000); 
 
   })
@@ -566,53 +514,31 @@ async function _deleteData(e:any){
 
 }
 
-  function _handleCloseUpdate(){
-
+  function _handleCloseModal(action:string){
+    console.log(action);
     setDrugId("");
-
     setCategoryId("");
-
     setStock(undefined);
-
     setPrice(undefined);
-
     setBenefit("");
-
     setPicture("");
 
-    setShowUpdate(false);
-
-    setUpdateErrorNotification(false);
+    switch (action) {
+      case "update":
+        setShowUpdate(false);
+      break;
+      case "delete":
+        setShowDelete(false);
+      break;
+      case "deleteImage":
+        setShowDialogDelete(false);
+      break;
+      default:
+      break;
+    }
 
   }
 
-  function _handleCloseDialogDelete(){
-
-    setDrugId("");
-
-    setCategoryId("");
-
-    setStock(undefined);
-
-    setPrice(undefined);
-
-    setBenefit("");
-
-    setPicture("");
-
-    setShowDialogDelete(false);
-
-  }
-
-  function _handleCloseDelete(){
-
-    setDrugId("");
-
-    setPicture("");
-
-    setShowDelete(false);
-
-  }
   useEffect(()=>{
 
     _loadData();
@@ -622,7 +548,7 @@ async function _deleteData(e:any){
   
 
   return (
-    <div className='Drugs'>
+    <div className='Drug'>
         <div className="header mb-3">
             <div className="row">
                 <div className="col-lg-12">
@@ -646,7 +572,7 @@ async function _deleteData(e:any){
 
                   <Notification
                       message={messageErrorNotification}
-                      type="error"
+                      type={"error"}
                       showIcon={true}
                       closable={true}
                   />
@@ -656,7 +582,7 @@ async function _deleteData(e:any){
 
                   <Notification
                     message={messageSuccessNotification}
-                    type="success"
+                    type={"success"}
                     showIcon={true}
                     closable={true}
                   />
@@ -678,7 +604,7 @@ async function _deleteData(e:any){
         </div>
         
         {/* //update */}
-        <Modal show={showUpdate} onHide={_handleCloseUpdate}>
+        <Modal show={showUpdate} onHide={()=>_handleCloseModal("update")}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit Drug</Modal.Title>
               </Modal.Header>
@@ -686,12 +612,14 @@ async function _deleteData(e:any){
             <div className="row mb-2">
               <div className="col-lg-12">
                 { updateErrorNotification &&
+
                   <Notification 
                     message={messageErrorNotification} 
-                    type="error" 
+                    type={"error"} 
                     showIcon={true} 
                     closable={true}
                   />
+
                 }
               </div>
             </div>
@@ -723,57 +651,32 @@ async function _deleteData(e:any){
             </div>
             </Modal.Body>
               <Modal.Footer>
-                <button className='btn btn-secondary' onClick={_handleCloseUpdate}>
+                <Button type="default" onClick={()=>_handleCloseModal("update")}>
                   Cancel
-                </button> 
-                <button className='btn btn-primary' onClick={_updateData}>
+                </Button> 
+                <Button type="primary" onClick={_updateData}>
                   Update
-                </button>
+                </Button>
               </Modal.Footer>
         </Modal>
         {/* delete data */}
-        <Modal show={showDelete} onHide={_handleCloseDelete}>
-              <Modal.Header closeButton>
-                <Modal.Title>Confirmation</Modal.Title>
-              </Modal.Header>
-            <Modal.Body>
-              <div className="row">
-                <div className="col-lg-12">
-                  <p>Do you want to delete this data ?</p>
-                </div>
-              </div>
-            </Modal.Body>
-            <Modal.Footer>
-              <button className='btn btn-secondary' onClick={_handleCloseDelete}>
-                Cancel
-              </button> 
-              <button className='btn btn-primary' onClick={_deleteData}>
-                Ok
-              </button>
-            </Modal.Footer>
-        </Modal>
+          <ModalPopupConfirmation
+            action={"delete"}
+            showPopup={showDelete}
+            hidePopup={_handleCloseModal}
+            titlePopup={"Confirmation"}
+            textPopup={"Do you want to delete this data ?"}
+            actionButton={_deleteData}
+          />
         {/* delete image */}
-        <Modal show={showDialogDelete} onHide={_handleCloseDialogDelete}>
-              <Modal.Header closeButton>
-                <Modal.Title>Confirmation</Modal.Title>
-              </Modal.Header>
-            <Modal.Body>
-            <div className="row">
-              <div className="col-lg-12">
-                <p>Do you want to delete this image ?</p>
-              </div>
-            </div>
-            </Modal.Body>
-            <Modal.Footer>
-              <button className='btn btn-secondary' onClick={_handleCloseDialogDelete}>
-                Cancel
-              </button> 
-              <button className='btn btn-primary' onClick={_deleteImage}>
-                Ok
-              </button>
-            </Modal.Footer>
-        </Modal>
-        
+          <ModalPopupConfirmation
+            action={"deleteImage"}
+            showPopup={showDialogDelete}
+            hidePopup={_handleCloseModal}
+            titlePopup={"Confirmation"}
+            textPopup={"Do you want to delete this image ?"}
+            actionButton={_deleteImage}
+          />
     </div>
   )
 }

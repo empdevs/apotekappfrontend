@@ -28,3 +28,12 @@ export default interface DrugType {
     drug_updated_at : string,
     drug_updated_by : string
 }
+
+export const MenuSidebarKey = {
+
+    dashboard : 1,
+    category : 2,
+    drug : 3
+    
+
+}
