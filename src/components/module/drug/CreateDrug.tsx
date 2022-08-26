@@ -239,13 +239,13 @@ export default function CreateDrug() {
             </div>
         </div>
         <div className="row">
-            <div className="col-lg-12">
+            <div className="col-lg-6">
                 <div className='form-input mb-3'>
                     <label htmlFor="drug" className='mb-2 text-secondary d-flex'>Drug Name <i className="bi bi-asterisk text-danger" style={{fontSize:"8px"}}></i></label>
                     <Input id='drug' name='drug' onChange={_drug} value={drug ? drug : ""}/>
                 </div>
             </div>
-            <div className="col-lg-12">
+            <div className="col-lg-6">
                 <div className="form-input mb-3">
                     <label htmlFor="category" className='mb-2 text-secondary d-flex'>Category <i className="bi bi-asterisk text-danger" style={{fontSize:"8px"}}></i></label>
                     <Select size={"middle"} style={{ width: "100%" }} id='category' onChange={_category} value={categoryId ? categoryId : ""}>
@@ -253,18 +253,22 @@ export default function CreateDrug() {
                     </Select>
                 </div>
             </div>
-            <div className="col-lg-12">
+        </div>
+        <div className="row">
+            <div className="col-lg-6">
                 <div className="form-input mb-3">
                     <label htmlFor="stock" className='mb-2 text-secondary d-flex'>Stock <i className="bi bi-asterisk text-danger" style={{fontSize:"8px"}}></i></label>
                     <Input type={'number'} id='stock' name='stock' onChange={_stock} value={stock && stock}/>
                 </div>
             </div>
-            <div className="col-lg-12">
+            <div className="col-lg-6">
                 <div className="form-input mb-3">
                     <label htmlFor="price" className='mb-2 text-secondary d-flex'>Price <i className="bi bi-asterisk text-danger" style={{fontSize:"8px"}}></i></label>
                     <Input type={'number'} id='price' name='price' onChange={_price} value={price && price}/>
                 </div>
             </div>
+        </div>
+        <div className="row">
             <div className="col-lg-12">
                 <div className="form-input mb-3">
                     <label htmlFor="benefit" className='mb-2 text-secondary'>Benefit</label>

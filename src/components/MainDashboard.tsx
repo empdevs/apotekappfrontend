@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, MinusCircleOutlined , AreaChartOutlined , AppstoreOutlined} from '@ant-design/icons';
-import { BrowserRouter, Route, Link, Switch, useRouteMatch,  useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Link, Switch, useRouteMatch } from 'react-router-dom';
+import { BsFillPeopleFill } from 'react-icons/bs';
 import Drug from './module/drug/Drug';
 import Category from './module/category/Category';
 import CreateCategory from './module/category/CreateCategory';
@@ -14,6 +15,8 @@ import './style/App.css';
 import CreateDrug from './module/drug/CreateDrug';
 import { MenuSidebarKey } from '../utility/TypesInterfaces';
 import Dashboard from './module/dashboard/Dashboard';
+import User from './module/user/User';
+import CreateUser from './module/user/CreateUser';
 
 
 export default function MainDashboard() {
@@ -29,6 +32,7 @@ export default function MainDashboard() {
     const routerDashboard : string = `${window.location.protocol}//${window.location.host}${url}/Dashboard`;
     const routerDrugs : string = `${window.location.protocol}//${window.location.host}${url}/Drug`;
     const routerCategory : string = `${window.location.protocol}//${window.location.host}${url}/Category`;
+    const routerUser : string = `${window.location.protocol}//${window.location.host}${url}/User`;
     
     function _routeActive(){
        
@@ -41,6 +45,9 @@ export default function MainDashboard() {
             break;
             case routerDrugs:
                 setRouterKey(3);
+            break;
+            case routerUser:
+                setRouterKey(4);
             break;
             default:
             break;
@@ -94,9 +101,14 @@ export default function MainDashboard() {
                                 Category
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key={MenuSidebarKey.drug} icon={<MinusCircleOutlined className='icon-module'/>} onClick={_routeActive} className={routerKey == MenuSidebarKey.drug ? 'ant-menu-item-selected active' : ''}>
+                        <Menu.Item key={MenuSidebarKey.drug} icon={<MinusCircleOutlined />} onClick={_routeActive} className={routerKey == MenuSidebarKey.drug ? 'ant-menu-item-selected active' : ''}>
                             <Link to={`${url}/Drug`}>
                                 Drugs
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key={MenuSidebarKey.user} icon={<BsFillPeopleFill/>} onClick={_routeActive} className={routerKey == MenuSidebarKey.user ? 'ant-menu-item-selected active' : ''}>
+                            <Link to={`${url}/User`}>
+                                User
                             </Link>
                         </Menu.Item>
                     </Menu>
@@ -124,6 +136,9 @@ export default function MainDashboard() {
 
                             <Route path={`${url}/Category`} component={Category}/>
                             <Route path={`${url}/CreateCategory`} component={CreateCategory}/>
+
+                            <Route path={`${url}/User`} component={User}/>
+                            <Route path={`${url}/CreateUser`} component={CreateUser}/>
                         </Switch>
 
                     </Content>

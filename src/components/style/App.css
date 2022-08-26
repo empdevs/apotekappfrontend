@@ -1,11 +1,6 @@
-.Dashboard {
-
-  height: 100%;
-
-}
 .Dashboard .ant-layout.ant-layout-has-sider {
 
-  height: 100%;
+  height: 100vw;
 
 }
 

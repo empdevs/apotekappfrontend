@@ -33,7 +33,7 @@ export const MenuSidebarKey = {
 
     dashboard : 1,
     category : 2,
-    drug : 3
-    
+    drug : 3,
+    user : 4
 
 }
