@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, MinusCircleOutlined , AreaChartOutlined , AppstoreOutlined} from '@ant-design/icons';
 import { BrowserRouter, Route, Link, Switch, useRouteMatch } from 'react-router-dom';
-import { BsFillPeopleFill } from 'react-icons/bs';
+import { BsFillPeopleFill, BsPersonCheckFill } from 'react-icons/bs';
 import Drug from './module/drug/Drug';
 import Category from './module/category/Category';
 import CreateCategory from './module/category/CreateCategory';
@@ -17,6 +17,8 @@ import { MenuSidebarKey } from '../utility/TypesInterfaces';
 import Dashboard from './module/dashboard/Dashboard';
 import User from './module/user/User';
 import CreateUser from './module/user/CreateUser';
+import Role from './module/role/Role';
+import CreateRole from './module/role/CreateRole';
 
 
 export default function MainDashboard() {
@@ -33,6 +35,7 @@ export default function MainDashboard() {
     const routerDrugs : string = `${window.location.protocol}//${window.location.host}${url}/Drug`;
     const routerCategory : string = `${window.location.protocol}//${window.location.host}${url}/Category`;
     const routerUser : string = `${window.location.protocol}//${window.location.host}${url}/User`;
+    const routerRole : string = `${window.location.protocol}//${window.location.host}${url}/Role`;
     
     function _routeActive(){
        
@@ -48,6 +51,9 @@ export default function MainDashboard() {
             break;
             case routerUser:
                 setRouterKey(4);
+            break;
+            case routerRole:
+                setRouterKey(5);
             break;
             default:
             break;
@@ -111,6 +117,11 @@ export default function MainDashboard() {
                                 User
                             </Link>
                         </Menu.Item>
+                        <Menu.Item key={MenuSidebarKey.role} icon={<BsPersonCheckFill/>} onClick={_routeActive} className={routerKey == MenuSidebarKey.role ? 'ant-menu-item-selected active' : ''}>
+                            <Link to={`${url}/Role`}>
+                                Role
+                            </Link>
+                        </Menu.Item>
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
@@ -139,6 +150,9 @@ export default function MainDashboard() {
 
                             <Route path={`${url}/User`} component={User}/>
                             <Route path={`${url}/CreateUser`} component={CreateUser}/>
+
+                            <Route path={`${url}/Role`} component={Role} />
+                            <Route path={`${url}/CreateRole`} component={CreateRole} />
                         </Switch>
 
                     </Content>

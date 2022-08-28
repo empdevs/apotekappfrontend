@@ -1,37 +1,19 @@
-import { PlusOutlined } from '@ant-design/icons'
-import { Button, Table } from 'antd'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Button, Table } from 'antd';
+import { Link } from 'react-router-dom';
+import { PlusOutlined } from '@ant-design/icons';
 
-export default function User() {
+export default function Role() {
 
     const columns : any = [
         {
           title: 'Id',
-          dataIndex: 'category_number',
-          key: 'category_number',
+          dataIndex: 'role_number',
+          key: 'role_number',
           width: '10%'
         },
         {
-          title: 'Username',
-          dataIndex: 'username',
-          key: 'username',
-          width : '10%',
-        },
-        {
-          title: 'Email',
-          dataIndex: 'email',
-          key: 'email',
-          width : '10%',
-        },
-        {
-          title: 'Phone',
-          dataIndex: 'phone',
-          key: 'phone',
-          width : '10%',
-        },
-        {
-          title: 'Roles',
+          title: 'Role',
           dataIndex: 'role',
           key: 'role',
           width : '10%',
@@ -43,20 +25,20 @@ export default function User() {
       ];
 
   return (
-    <div className='User'>
+    <div className='Role'>
       <div className="header mb-3">
           <div className="row">
               <div className="col-lg-12">
-                  <h3>User</h3>
+                  <h3>Role</h3>
               </div>
           </div>
       </div>
       <div className="main">
           <div className="row mb-3">
               <div className="col-lg-12">
-                  <Link to={'/Index/CreateUser'}>
+                  <Link to={'/Index/CreateRole'}>
                       <Button type="primary" className=' d-flex align-items-center'>
-                          <PlusOutlined /> Add New User
+                          <PlusOutlined /> Add New Role
                       </Button>
                   </Link>
               </div>
